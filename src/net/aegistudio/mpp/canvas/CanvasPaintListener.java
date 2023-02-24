@@ -89,6 +89,7 @@ public class CanvasPaintListener implements Listener {
                 MapCanvasRegistry registry = painting.m_canvasManager.idCanvasMap.get(mapId);
                 if (registry == null) continue;
 
+                registry.getCanvas().tick();
                 if (manipulate(itemFrame, registry, interact.getPlayer(),
                         interact.getAction() == Action.RIGHT_CLICK_AIR ||
                                 interact.getAction() == Action.RIGHT_CLICK_BLOCK)) {
@@ -107,6 +108,7 @@ public class CanvasPaintListener implements Listener {
             MapCanvasRegistry registry = painting.m_canvasManager.idCanvasMap.get(mapId);
             if (registry == null) return;
 
+            registry.getCanvas().tick();
             if (manipulate(itemFrame, registry, interact.getPlayer(), true))
                 interact.setCancelled(true);
         }

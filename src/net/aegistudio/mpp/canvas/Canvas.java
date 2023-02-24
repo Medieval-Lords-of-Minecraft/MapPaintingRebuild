@@ -52,7 +52,6 @@ implements Cloneable {
     protected MapView view;
     protected final TreeSet<Integer> viewed = new TreeSet();
     protected final HashSet<Object> observers = new HashSet();
-    protected final HashMap<Player, Integer> suspector = new HashMap();
     public boolean updateDisplay = true;
 
     public Canvas(MapPainting painting) {
@@ -160,38 +159,15 @@ implements Cloneable {
         
         
         
-        if (this.context.dirty) {
+        //if (this.context.dirty) {
             //mapPacket = new PacketPlayOutMap(this.painting.inject, this.view, this.context.pixel, 0, this.context.rowMin, 128, this.context.rowMax - this.context.rowMin + 1);
-        }
-        Iterator<Map.Entry<Player, Integer>> suspector = this.suspector.entrySet().iterator();
-        while (suspector.hasNext()) {
-            Map.Entry<Player, Integer> entry = suspector.next();
-            entry.setValue(entry.getValue() + 1);
-            if (entry.getValue() >= this.painting.m_canvasManager.suspectTimedOut) {
-                suspector.remove();
-                continue;
-            }
-            //if(packet == null) continue;
-            
-            // TODO - why is inject dead?
-            /*
-            try {
-            	//pm.sendServerPacket(TODO - PLAYER, packet);
-            	int test = 5;
-            	// empty
-            } catch (InvocationTargetException e) {
-            	throw new RuntimeException(
-                        "Cannot send packet " + packet, e);
-            }
-            */
-            
-            //new PlayerConnection(this.painting.inject, entry.getKey()).sendPacket(mapPacket);
-        }
+        //}
         this.context.clean();
     }
 
     public void add(MapCanvasRegistry registry) {
-        this.tickRunnable.runTaskTimer((Plugin)this.painting, 1L, 1L);
+        this.tickRunnable.runTaskTimer((Plugin)this.painting, 0L, 20L);
+    	tick();
         this.view = registry.view;
     }
 
@@ -203,7 +179,6 @@ implements Cloneable {
         if (!this.hasViewed(player)) {
             this.context.subrender(view, new MapCanvasAdapter(this.painting.m_canvasManager.color, canvas));
         }
-        this.suspector.put(player, 0);
     }
 
     protected abstract void subrender(MapView var1, Paintable var2);

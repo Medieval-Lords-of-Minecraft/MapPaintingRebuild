@@ -48,6 +48,10 @@ implements Module {
         this.interactor.add("#all");
         this.history = new History();
     }
+    
+    public Canvas getCanvas() {
+    	return canvas;
+    }
 
     public boolean select(TreeSet<String> set, String who, Permissible sender) {
         if (set.contains(who)) {
